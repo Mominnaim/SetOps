@@ -40,12 +40,18 @@ def difference_function(txt1, txt2):
     list_2 = set(file_into_a_list(txt2))
 
     difference_result = list_1.difference(list_2)
+    difference_result = sorted(list(difference_result))
 
     # This writes the word into the result txt file.
     result_file = 'result.txt'
     with open(result_file, 'w') as result_file:
-        for word in difference_result:
-            result_file.write(word + '\n')
+        for x in range(len(difference_result)):
+            if x == len(difference_result) - 1:
+                result_file.write(difference_result[x])
+            else:
+                result_file.write(difference_result[x]+ '\n')
+            
+    result_file.close()
 
 
 # This is for the union operater function
@@ -56,12 +62,18 @@ def union_function(txt1, txt2):
     list_2 = set(file_into_a_list(txt2))
 
     union_result = list_1.union(list_2)
+    union_result = sorted(list(union_result))
 
     # This writes the word into the result txt file.
     result_file = 'result.txt'
     with open(result_file, 'w') as result_file:
-        for word in union_result:
-            result_file.write(word + '\n')
+        for x in range(len(union_result)):
+            if x == len(union_result) - 1:
+                result_file.write(union_result[x])
+            else:
+                result_file.write(union_result[x]+ '\n')
+            
+    result_file.close()
     
 
 # This is for the intersection operater function 
@@ -74,13 +86,19 @@ def intersection_function(txt1,txt2):
 
     # This is where the actual intersection takes places but the value is in a set
     intersection_result = list_1.intersection(list_2)
+    intersection_result = sorted(list(intersection_result))
+    
 
     # This writes the word into the result txt file.
     result_file = 'result.txt'
     with open(result_file, 'w') as result_file:
-        for word in intersection_result:
-            result_file.write(word + '\n')
+        for x in range(len(intersection_result)):
+            if x == len(intersection_result) - 1:
+                result_file.write(intersection_result[x])
+            else:
+                result_file.write(intersection_result[x]+ '\n')
             
+    result_file.close()
 
     
 # This converts the txt file into a list.
