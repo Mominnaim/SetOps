@@ -35,14 +35,18 @@ def perform_operation(txt1, txt2, operation):
 
 # This is for the difference operater function
 def difference_function(txt1, txt2):
+
     # This creates two variables using the same function to store the the list of each file.
     list_1 = set(file_into_a_list(txt1))
     list_2 = set(file_into_a_list(txt2))
 
-    difference_result = list_1.difference(list_2)
-    difference_result = sorted(list(difference_result))
+    # Creates a list that is sorted, and in difference
+    difference_result = sorted(list(list_1.difference(list_2)))
 
     # This writes the word into the result txt file.
+    # Essentially what this does is create file name result.txt and for every x in the length of difference_result, write that word into the new file with \newLine 
+    # UNLESS it is the last word then you can just write the word without the new line 
+
     result_file = 'result.txt'
     with open(result_file, 'w') as result_file:
         for x in range(len(difference_result)):
@@ -61,9 +65,9 @@ def union_function(txt1, txt2):
     list_1 = set(file_into_a_list(txt1))
     list_2 = set(file_into_a_list(txt2))
 
-    union_result = list_1.union(list_2)
-    union_result = sorted(list(union_result))
 
+    union_result = sorted(list(list_1.union(list_2)))
+    
     # This writes the word into the result txt file.
     result_file = 'result.txt'
     with open(result_file, 'w') as result_file:
@@ -85,10 +89,8 @@ def intersection_function(txt1,txt2):
 
 
     # This is where the actual intersection takes places but the value is in a set
-    intersection_result = list_1.intersection(list_2)
-    intersection_result = sorted(list(intersection_result))
+    intersection_result = sorted(list(list_1.intersection(list_2)))
     
-
     # This writes the word into the result txt file.
     result_file = 'result.txt'
     with open(result_file, 'w') as result_file:
@@ -105,8 +107,9 @@ def intersection_function(txt1,txt2):
 def file_into_a_list(txt):
     try:
         with open(txt, 'r') as file:
-            # Read lines from the file, split each line into words, and remove leadinng/trailinng whitespaces
-            words = [word.strip().lower() for line in file for word in re.split(r'[.\s,]+', line)]
+            # Reads each line in the file, and withing each line it will read each word and split \.(?!d) -> all . that have zero to one occurences of no digits after it
+            # |[\s,]+ -> OR split according to white space, and comma. And return that. ***
+            words = [word.strip().lower() for line in file for word in re.split(r'\.(?!\d)|[\s,]+', line) if word]
             return words
     except FileNotFoundError:
         print(f"Error: File '{txt}' not found.")
