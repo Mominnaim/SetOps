@@ -87,7 +87,10 @@ def intersection_function(txt1,txt2):
     list_1 = set(file_into_a_list(txt1))
     list_2 = set(file_into_a_list(txt2))
 
+    print(list_1)
+    print(list_2)
 
+'''
     # This is where the actual intersection takes places but the value is in a set
     intersection_result = sorted(list(list_1.intersection(list_2)))
     
@@ -101,6 +104,8 @@ def intersection_function(txt1,txt2):
                 result_file.write(intersection_result[x]+ '\n')
             
     result_file.close()
+'''
+
 
     
 # This converts the txt file into a list.
@@ -109,7 +114,7 @@ def file_into_a_list(txt):
         with open(txt, 'r') as file:
             # Reads each line in the file, and withing each line it will read each word and split \.(?!d) -> all . that have zero to one occurences of no digits after it
             # |[\s,]+ -> OR split according to white space, and comma. And return that. ***
-            words = [word.strip().lower() for line in file for word in re.split(r'\.(?!\d)|[\s,]+', line) if word]
+            words = [word.strip().lower() for line in file for word in re.split(r'\.(?!\d)|[\s,+-=/]+', line) if word]
             return words
     except FileNotFoundError:
         print(f"Error: File '{txt}' not found.")
