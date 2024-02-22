@@ -14,18 +14,22 @@ def file_into_a_list(txt):
     
 """
 
-skip = r'!@#$%^?&<>`~;:'
-seperator_1 = r'. +-=/'
-numbers = r'1234567890'
+
 
 
 
 def file_into_a_list(txt):
+
+    skip = r'!@#$%^?&<>`~;:'
+    seperator_1 = r'. +-=/,'
+    numbers = r'1234567890'
+
     funnel_list = []
 
     main_list = []
 
     result = ''.join(char for char in txt)
+    print(result)
     for x in range(len(result)):
         if result[x] in skip:
             continue
@@ -33,6 +37,10 @@ def file_into_a_list(txt):
             if result[x] == '.':
                 if result[x + 1] in numbers:
                     funnel_list.append(result[x])
+                else:
+                    new_word = ''.join(char for char in funnel_list)
+                    main_list.append(new_word)
+                    funnel_list = []
             else:
                 if len(funnel_list) != 0:
                     new_word = ''.join(char for char in funnel_list)
@@ -58,5 +66,6 @@ def file_into_a_list(txt):
 
 
 testing = 'tree, 12.34 Blue. 56.78 hot. 91011 rock 12.13 star 91011 Moon. 91.012'
-
+testing_1 = '#hell.o an%d w3lco+me 4.14 4.a 1..2 t^e<s>t!i&ng a, , , a \n\n\n 33' 
 file_into_a_list(testing)
+file_into_a_list(testing_1)
