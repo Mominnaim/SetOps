@@ -105,7 +105,7 @@ def intersection_function(txt1,txt2):
 # This converts the txt file into a list.
 def file_into_a_list(txt):
     skip = r'!@#$%^?&<>`~;:'
-    seperator_1 = r'. +-=/,*' + '\n'
+    seperator_1 = r'. +-=/,*()' + '\n' + ' \' '
     numbers = r'1234567890'
 
     funnel_list = []
@@ -140,7 +140,18 @@ def file_into_a_list(txt):
                         main_list.append(new_word)
                         funnel_list = []
                     else:
-                        funnel_list.append(result[x])
+                        if (isinstance(result[x],str) and isinstance(result[x+1],int)):
+                            funnel_list.append(result[x])
+                            new_word = ''.join(char for char in funnel_list)
+                            main_list.append(new_word)
+                            funnel_list = []
+                        elif (isinstance(result[x],int) and isinstance(result[x+1],str)):
+                            funnel_list.append(result[x])
+                            new_word = ''.join(char for char in funnel_list)
+                            main_list.append(new_word)
+                            funnel_list = []
+                        else:
+                            funnel_list.append(result[x])
                 
 
         lowercased_list = [item.lower() if isinstance(item, str) else item for item in main_list]
