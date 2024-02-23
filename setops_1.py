@@ -159,11 +159,6 @@ def file_into_a_list(txt):
     except FileNotFoundError:
         print(f"Error: File '{txt}' not found.")
         return []
-    
-
-    
-    
-
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
