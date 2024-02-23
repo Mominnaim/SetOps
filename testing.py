@@ -38,22 +38,45 @@ def file_into_a_list(txt):
                             funnel_list.append(result[x])
 
 
-                        # If the next index is not a number, we will take whatever we have in the funnel and push that to the main    
-                        elif result[x + 1] not in numbers and result[x-1] in numbers:
+                        # if the next index is NOT a number and the previous index IS a number -> we go here 
+                        elif (result[x + 1] not in numbers and result[x-1] in numbers):
+
+                            # if there is nothing in the funnel list 
                             if len(funnel_list) == 0:
                                  continue
+                            
+                            # If there is something in the funnel list then push it to the main
                             else:
                                 new_word = ''.join(char for char in funnel_list)
                                 main_list.append(new_word)
                                 funnel_list = []
 
+                        # if the next index IS a number and the previous index is NOT a number than -> come here
                         elif result[x + 1] in numbers and result[x-1] not in numbers:
+
+                            # if there is nothing in the funnel list 
                             if len(funnel_list) == 0:
                                  continue
+                            
+                            # If there is something in the funnel list, then push it to the main
                             else:
                                 new_word = ''.join(char for char in funnel_list)
                                 main_list.append(new_word)
                                 funnel_list = []
+                        
+                        # If both the indexes front and back are not numbers the come here
+                        elif result[x + 1] not in numbers and result[x-1] not in numbers:
+
+                            # if there is nothing in the funnel list 
+                            if len(funnel_list) == 0:
+                                 continue
+                            
+                            # If there is something in the funnel list, then push it to the main
+                            else:
+                                new_word = ''.join(char for char in funnel_list)
+                                main_list.append(new_word)
+                                funnel_list = []
+                        
                         
                     # If the seperator is not a . -> then we will push whatever we have in the funnel into the main list.        
                     else:
@@ -81,14 +104,14 @@ def file_into_a_list(txt):
                     # If there are more indexs then we come here
                     else:
 
-                        #
+                        # if the current index is NOT a number and the next index IS a number than append the current index, then push whatever is in the funnel to the main 
                         if (result[x] not in numbers and result[x+1] in numbers):
                             funnel_list.append(result[x])
                             new_word = ''.join(char for char in funnel_list)
                             main_list.append(new_word)
                             funnel_list = []
 
-                        #
+                        # if the current index IS a number and the next index is NOT a number than append the current index, then push whatever is in the funnel to the main 
                         elif (result[x] in numbers and result[x+1] not in numbers and result[x + 1] not in seperator_1):
                             funnel_list.append(result[x])
                             new_word = ''.join(char for char in funnel_list)
@@ -103,7 +126,7 @@ def file_into_a_list(txt):
     lowercased_list = [item.lower() if isinstance(item, str) else item for item in main_list]
     print(lowercased_list)
 
-testing = '1a1 tw0 1.a.1 #.1 1.a b.2'
+testing = '1a1 tw0 1.a.1 #.1 1.a b.2 test.red'
 testing_1 = '#hell.o an%d w3lco+me 4.14 4.a 1..2 t^e<s>t!i&ng a, , , a \n\n\n 33' 
 file_into_a_list(testing)
 file_into_a_list(testing_1)

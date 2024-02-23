@@ -116,40 +116,102 @@ def file_into_a_list(txt):
         with open(txt, 'r') as file:
             result = ''.join(char for char in file)
             for x in range(len(result)):
+            
+                #if the current index is a skip symbol, we just pass over it.
                 if result[x] in skip:
                     continue
+
+                # If the current index is a seperator symbol than we go into this elif
                 elif result[x] in seperator_1:
-                    if result[x] == '.':
-                        if result[x + 1] in numbers:
+
+                    # If the seperator is a . AND if the . is not the first thing in the list -> we go here
+                    if result[x] == '.' and x != 0:
+                        
+                        # If the next index is a number and index before is also a number than we will append the . rather then splitting it.
+                        if result[x + 1] in numbers and result[x-1] in numbers :
                             funnel_list.append(result[x])
-                        else:
-                            new_word = ''.join(char for char in funnel_list)
-                            main_list.append(new_word)
-                            funnel_list = []
+
+
+                        # if the next index is NOT a number and the previous index IS a number -> we go here 
+                        elif result[x + 1] not in numbers and result[x-1] in numbers:
+
+                            # if there is nothing in the funnel list 
+                            if len(funnel_list) == 0:
+                                    continue
+                            
+                            # If there is something in the funnel list then push it to the main
+                            else:
+                                new_word = ''.join(char for char in funnel_list)
+                                main_list.append(new_word)
+                                funnel_list = []
+
+                        # if the next index IS a number and the previous index is NOT a number than -> come here
+                        elif result[x + 1] in numbers and result[x-1] not in numbers:
+
+                            # if there is nothing in the funnel list 
+                            if len(funnel_list) == 0:
+                                    continue
+                            
+                            # If there is something in the funnel list, then push it to the main
+                            else:
+                                new_word = ''.join(char for char in funnel_list)
+                                main_list.append(new_word)
+                                funnel_list = []
+                        
+                        # If both the indexes front and back are not numbers the come here
+                        elif result[x + 1] not in numbers and result[x-1] not in numbers:
+
+                            # if there is nothing in the funnel list 
+                            if len(funnel_list) == 0:
+                                 continue
+                            
+                            # If there is something in the funnel list, then push it to the main
+                            else:
+                                new_word = ''.join(char for char in funnel_list)
+                                main_list.append(new_word)
+                                funnel_list = []
+                        
+                    # If the seperator is not a . -> then we will push whatever we have in the funnel into the main list.        
                     else:
+
+                        # If there is something within the funnel list, it will be pushed into the main.
                         if len(funnel_list) != 0:
                             new_word = ''.join(char for char in funnel_list)
                             main_list.append(new_word)
                             funnel_list = []
+
+                        # If there is nothing withing the funnel list you move on the next index
                         else:
                             continue
+
+                # If the current index is a letter or number then we go into this if else statement 
                 else:
+
+                    # If the current index is the last index in the list, then we will push whatever we have in the funnel to the main.
                     if x == len(result) - 1:
                         funnel_list.append(result[x])
                         new_word = ''.join(char for char in funnel_list)
                         main_list.append(new_word)
                         funnel_list = []
+
+                    # If there are more indexs then we come here
                     else:
-                        if (isinstance(result[x],str) and isinstance(result[x+1],int)):
+
+                        # if the current index is NOT a number and the next index IS a number than append the current index, then push whatever is in the funnel to the main 
+                        if (result[x] not in numbers and result[x+1] in numbers):
                             funnel_list.append(result[x])
                             new_word = ''.join(char for char in funnel_list)
                             main_list.append(new_word)
                             funnel_list = []
-                        elif (isinstance(result[x],int) and isinstance(result[x+1],str)):
+
+                        # if the current index IS a number and the next index is NOT a number than append the current index, then push whatever is in the funnel to the main 
+                        elif (result[x] in numbers and result[x+1] not in numbers and result[x + 1] not in seperator_1):
                             funnel_list.append(result[x])
                             new_word = ''.join(char for char in funnel_list)
                             main_list.append(new_word)
                             funnel_list = []
+
+                        # else just push the current index 
                         else:
                             funnel_list.append(result[x])
                 

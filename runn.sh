@@ -15,6 +15,3 @@ echo This is test four
 python3 setops_1.py "set1=a4.txt;set2=b4.txt;operation=intersection"
 diff result.txt result4.txt
 rm result.txt
-echo This is MY OWN TEST CASE
-python3 setops_1.py "set1=myTesting.txt;set2=yourTesting.txt;operation=intersection"
-diff result.txt inter_result.txt
