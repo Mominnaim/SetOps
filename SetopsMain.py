@@ -1,28 +1,10 @@
 import sys
 
-def main():
-    # Uncomment below lines if you want to get file names from command line arguments
-    # fileName = sys.argv[1]
-    # fileName2 = sys.argv[2]
-    # listFile1 = getWords(fileName)
-    # listFile2 = getWords(fileName2)
-
-    # Or you can directly call getWords function
-    listF = getWords()
-    print(listF)
 
 def getWords(txt):
-    f1 = open(txt, "r")
-    line = f1.read() # --------------------------------------------------------> This works 
-
-
 
     word = []
-    parseWords(word, line, 0)                                                                 
-    word = removeDuplicates(word, 0)                      
-    word = mergeSort(word)
-
-    return line
+    return mergeSort(removeDuplicates(parseWords(word,open(txt, "r").read(),0),0))
 
 """
     words3 = union(words, words2)
@@ -32,29 +14,52 @@ def getWords(txt):
     return words3
 """
 
+# The starting point for the actual remove function which is called removeDupHelp()
 def removeDuplicates(wordsList, index):
+
+    # the base case
     if index + 1 >= len(wordsList):
         return wordsList
+    
+    # Otherwise come here and go to the acutal remove duplicate function
     else:
         # Update wordsList with the result of removeDupHelp
-        wordsList = removeDupHelp(wordsList, index + 1, wordsList[index])
+        #wordsList = removeDupHelp(wordsList, index + 1, wordsList[index])
         # Recur for the next word
-        return removeDuplicates(wordsList, index + 1)
+
+        return removeDuplicates(removeDupHelp(wordsList, index + 1, wordsList[index]), index + 1)
+
+# This is the actual function where the duplicates get deleted
+def removeDupHelp(wordsList, index, target):
+
+    # This is the base case for this function
+    if index > len(wordsList) - 1:
+        return wordsList
     
+    # elif the word matches the target then  append everything 
+    elif wordsList[index] == target:
+
+        # wordsList = wordsList[:index] + wordsList[index + 1:]
+        # Recur for the same index as the length has reduced after removal
+
+        return removeDupHelp(wordsList[:index] + wordsList[index + 1:], index, target)
+    else:
+        # Recur for the next character
+        return removeDupHelp(wordsList, index + 1, target)
+    
+
 def intersection(wordsList1, wordsList2, index):
     if index + 1 >= len(wordsList1):
-        return wordsList1
+        return_result_file(wordsList1)
     else:
-        # Update wordsList with the result of removeIntersectionHelp
-        intersect = removeIntersectionHelp(wordsList2, 0, wordsList1[index])
-        if (intersect):
+        if (removeIntersectionHelp(wordsList2, 0, wordsList1[index])): 
             return intersection(wordsList1, wordsList2, index + 1)
-        else:
-            wordsList1 = wordsList1[:index] + wordsList1[index + 1:]
-            return intersection(wordsList1, wordsList2, index)
-        # Recur for the next word
         
-    
+        else:
+            #wordsList1 = wordsList1[:index] + wordsList1[index + 1:]
+            return intersection(wordsList1[:index] + wordsList1[index + 1:], wordsList2, index)
+        # Recur for the next word
+            
 def removeIntersectionHelp(wordsList, index, target):
     if index > len(wordsList) - 1:
         return False
@@ -63,45 +68,33 @@ def removeIntersectionHelp(wordsList, index, target):
     else:
         # Recur for the next character
         return removeIntersectionHelp(wordsList, index + 1, target)
-    
+
+
 def difference(wordsList1, wordsList2, index):
-    if index >= len(wordsList1):
-        return wordsList1
+    if index >= len(wordsList1): 
+         return_result_file(wordsList1)
     else:
-        # Update wordsList with the result of removeIntersectionHelp
-        different = removeDifferenceHelp(wordsList2, 0, wordsList1[index])
-        if (different):
-            return difference(wordsList1, wordsList2, index + 1)
-        else:
-            wordsList1 = wordsList1[:index] + wordsList1[index + 1:]
-            return difference(wordsList1, wordsList2, index)
-        # Recur for the next word
+        if (removeDifferenceHelp(wordsList2, 0, wordsList1[index])): # -----------> (x,y,z) where x is the #2 list that is being checked, y = is the index, and z is the target word from the from list #1
+            return difference(wordsList1, wordsList2, index + 1) # ------------> This is the recursion where it adds one to the index and repeats.
         
-    
+        else:
+            #wordsList1 = wordsList1[:index] + wordsList1[index + 1:]
+            return difference(wordsList1[:index] + wordsList1[index + 1:], wordsList2, index) # ----------> It will first check the if, and if it doesnt return true, then it will come here.
+        # Recur for the next word
+            
 def removeDifferenceHelp(wordsList, index, target):
     if index > len(wordsList) - 1:
         return True
     elif wordsList[index] == target:
         return False
     else:
-        # Recur for the next character
+        # Recur for the next element
         return removeDifferenceHelp(wordsList, index + 1, target)
     
-def union(wordsList1, wordsList2):
-    wordsList = wordsList1 + wordsList2
-    wordsList = removeDuplicates(wordsList, 0)
-    return wordsList
 
-def removeDupHelp(wordsList, index, target):
-    if index > len(wordsList) - 1:
-        return wordsList
-    elif wordsList[index] == target:
-        wordsList = wordsList[:index] + wordsList[index + 1:]
-        # Recur for the same index as the length has reduced after removal
-        return removeDupHelp(wordsList, index, target)
-    else:
-        # Recur for the next character
-        return removeDupHelp(wordsList, index + 1, target)
+def union(wordsList1, wordsList2): 
+    return_result_file(removeDuplicates(wordsList1 + wordsList2, 0))
+
 
 def parseWords(wordsList, line, index):
     while index < len(line):
@@ -110,8 +103,8 @@ def parseWords(wordsList, line, index):
         elif (line[index] in 'abcdefghijklmnopqrstuvwxyz'):
             index += 1
         elif (line[index] in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
-            lowercaseChar = chr(ord(line[index]) + 32)
-            line = line[:index] + lowercaseChar + line[index + 1:]
+            #lowercaseChar = chr(ord(line[index]) + 32)
+            line = line[:index] + chr(ord(line[index]) + 32) + line[index + 1:]
             index += 1
         else:
             if (line[index] == "."):
@@ -146,22 +139,22 @@ def parseWords(wordsList, line, index):
 
 
 def mergeSort(arr):
-    n = len(arr)
-    if n <= 1:
+    #n = len(arr)
+    if len(arr) <= 1:
         return arr
     else:
-        mid = n // 2
-        left = arr[0:mid]
-        right = arr[mid:n]
-        sortedLeft = mergeSort(left)
-        sortedRight = mergeSort(right)
-        return merged(sortedLeft,sortedRight)
+        #mid = n // 2
+        #left = arr[0:mid]
+        #right = arr[mid:n]
+        #sortedLeft = mergeSort(left)
+        #sortedRight = mergeSort(right)
+        return merged(mergeSort(arr[0:(len(arr) // 2)]),mergeSort(arr[(len(arr) // 2):len(arr)]),0,0)
     
-def merged(left,right):
+def merged(left,right,i,j):
     mergedArray = []
-    m, n = len(left), len(right)
-    i, j = 0, 0
-    while i < m and j < n:
+    #m, n = len(left), len(right)
+    #i, j = 0, 0
+    while i < len(left) and j < len(right):
         if (left[i] <= right[j]):
             mergedArray.append(left[i])
             i += 1
@@ -172,6 +165,30 @@ def merged(left,right):
     mergedArray.extend(right[j:])
     return mergedArray
 
+
+def perform_operation(txt1, txt2, operation):
+
+    # If difference operation is selected
+    if operation == 'difference':
+        difference(txt1, txt2,0)
+
+    # If union operator is selected
+    elif operation == 'union':
+        union(txt1, txt2)
+
+    # If intersection is selected intersection
+    elif operation == 'intersection':
+        intersection(txt1, txt2,0)
+
+    else:
+        print("sorry but that is not a valid operation.")
+        sys.exit(1)
+
+def return_result_file(txt_list):
+    with open('result.txt', 'w') as result_file:
+        result_file.write('\n'.join(txt_list))
+
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Format: python setops.py \"set1=[filename]; set2=[filename];operation=[difference|union|intersection]\"")
@@ -181,13 +198,13 @@ if __name__ == "__main__":
     args = sys.argv[1].split(';')
 
     # There are three elements now which each one of them being assigned a variable.
-    set1 = getWords(args[0].split('=')[1])
-    set2 = getWords(args[1].split('=')[1])
-
-    print(set1)
-    print(set2)
+    #set1 = getWords(args[0].split('=')[1])
+    
+    #set2 = getWords(args[1].split('=')[1])
 
     operation = args[2].split('=')[1]
+
+    perform_operation(getWords(args[0].split('=')[1]), getWords(args[1].split('=')[1]), args[2].split('=')[1])
 
 
     # If the correct parameters are passed in then start the actually part of the code.
