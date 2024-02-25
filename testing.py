@@ -1,11 +1,6 @@
 import re
 """
 
-"""
-
-
-
-
 
 def file_into_a_list(txt):
 
@@ -130,3 +125,72 @@ testing = '1a1 tw0 1.a.1 #.1 1.a b.2 test.red'
 testing_1 = '#hell.o an%d w3lco+me 4.14 4.a 1..2 t^e<s>t!i&ng a, , , a \n\n\n 33' 
 file_into_a_list(testing)
 file_into_a_list(testing_1)
+
+"""
+
+# wordlist is an empty list , line is the line that are being passed in through the file, index is 0 by defualt
+
+
+def parseWords(wordsList, line, index):
+    funnel_list = []
+    while index < len(line):
+
+        # If the current index is a number, then add one to the index
+        if (line[index] in '0123456789'):
+            index += 1
+
+        # If the current index is a lowercase letter, then add one to the index    
+        elif (line[index] in 'abcdefghijklmnopqrstuvwxyz'):
+            index += 1
+        # If the curren index is a upper case letter then, lowercase it then add one. 
+        elif (line[index] in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
+
+            # You just took that upper case letter and lowercased it, now to add it back in the string, you would split the string from 0 to the index + the lowercase letter + the index and on. 
+            lowercaseChar = chr(ord(line[index]) + 32)
+            line = line[:index] + lowercaseChar + line[index + 1:]
+            index += 1
+
+        # If it not a lowercase,uppercase, or number come here
+        else:
+
+            # If the current index is a . then come here
+            if (line[index] == "."):
+
+                # if the index is not 0 then we can move on since we know it is not the first thing in the list
+                if index != 0:
+
+                    if (index != len(line) - 1):
+                        if (line[index-1] in '0123456789'): 
+                            if (line[index+1] in '012345679'): # -------------------> If there is a number behind it and a number infront of it, then we can append the whole number.
+                                    index += 1 
+
+                            #         
+                            else:                              
+                                wordsList.append(line[:index])
+                                line = line[index + 1:]
+                                index = 0
+                        else:
+                            wordsList.append(line[:index])
+                            line = line[index + 1:]
+                            index = 0
+                    else:
+                        wordsList.append(line[:index])
+                        line = line[index + 1:]
+                        index = 0
+                else:
+                    line = line[index + 1:]
+                    index = 0
+            else:
+                if index != 0:
+                    wordsList.append(line[:index])
+                line = line[index + 1:]
+                index = 0
+    if index != 0:
+        wordsList.append(line)
+    return (wordsList)
+
+
+words = []
+line = 'This is an example code a!1'
+
+print(parseWords(words,line,0))

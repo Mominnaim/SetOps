@@ -7,7 +7,7 @@ def read_files(file_path):
     try:
         # This reads the file and returns the file.
         with open(file_path, 'r') as file:
-            content = file.read()
+            content = file.read() # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
             return file_path
     # If the file is not found, then the error is printed
     except FileNotFoundError:
@@ -37,11 +37,11 @@ def perform_operation(txt1, txt2, operation):
 def difference_function(txt1, txt2):
 
     # This creates two variables using the same function to store the the list of each file.
-    list_1 = set(file_into_a_list(txt1))
-    list_2 = set(file_into_a_list(txt2))
+    list_1 = set(file_into_a_list(txt1)) # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
+    list_2 = set(file_into_a_list(txt2)) # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
 
     # Creates a list that is sorted, and in difference
-    difference_result = sorted(list(list_1.difference(list_2)))
+    difference_result = sorted(list(list_1.difference(list_2))) # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
 
     # This writes the word into the result txt file.
     # Essentially what this does is create file name result.txt and for every x in the length of difference_result, write that word into the new file with \newLine 
@@ -62,8 +62,8 @@ def difference_function(txt1, txt2):
 def union_function(txt1, txt2):
 
     # This creates two variables using the same function to store the the list of each file.
-    list_1 = set(file_into_a_list(txt1))
-    list_2 = set(file_into_a_list(txt2))
+    list_1 = set(file_into_a_list(txt1)) # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
+    list_2 = set(file_into_a_list(txt2)) # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
 
     union_result = sorted(list(list_1.union(list_2)))
     
@@ -83,12 +83,12 @@ def union_function(txt1, txt2):
 def intersection_function(txt1,txt2):
 
     # This creates two variables using the same function to store the the list of each file.
-    list_1 = set(file_into_a_list(txt1))
-    list_2 = set(file_into_a_list(txt2))
+    list_1 = set(file_into_a_list(txt1)) # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
+    list_2 = set(file_into_a_list(txt2)) # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
 
 
     # This is where the actual intersection takes places but the value is in a set
-    intersection_result = sorted(list(list_1.intersection(list_2)))
+    intersection_result = sorted(list(list_1.intersection(list_2))) # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
     
     # This writes the word into the result txt file.
     result_file = 'result.txt'
@@ -104,13 +104,13 @@ def intersection_function(txt1,txt2):
     
 # This converts the txt file into a list.
 def file_into_a_list(txt):
-    skip = r'!@#$%^?&<>`~;:'
-    seperator_1 = r'. +-=/,*()' + '\n' + ' \' '
-    numbers = r'1234567890'
+    skip = r'!@#$%^?&<>`~;:' # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
+    seperator_1 = r'. +-=/,*()' + '\n' + ' \' ' # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
+    numbers = r'1234567890' # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
 
-    funnel_list = []
+    funnel_list = [] # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
 
-    main_list = []
+    main_list = [] # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
     
     try:
         with open(txt, 'r') as file:
@@ -216,8 +216,8 @@ def file_into_a_list(txt):
                             funnel_list.append(result[x])
                 
 
-        lowercased_list = [item.lower() if isinstance(item, str) else item for item in main_list]
-        return lowercased_list
+        lowercased_list = [item.lower() if isinstance(item, str) else item for item in main_list] # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
+        return lowercased_list # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
     except FileNotFoundError:
         print(f"Error: File '{txt}' not found.")
         return []
