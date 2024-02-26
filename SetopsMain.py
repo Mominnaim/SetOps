@@ -146,17 +146,11 @@ def mergeSort(arr):
     if len(arr) <= 1:
         return arr
     else:
-        #mid = n // 2
-        #left = arr[0:mid]
-        #right = arr[mid:n]
-        #sortedLeft = mergeSort(left)
-        #sortedRight = mergeSort(right)
+
         return merged(mergeSort(arr[0:(len(arr) // 2)]),mergeSort(arr[(len(arr) // 2):len(arr)]),0,0)
     
 def merged(left,right,i,j):
     mergedArray = []
-    #m, n = len(left), len(right)
-    #i, j = 0, 0
     while i < len(left) and j < len(right):
         if (left[i] <= right[j]):
             mergedArray.append(left[i])
@@ -202,10 +196,8 @@ if __name__ == "__main__":
 
     # There are three elements now which each one of them being assigned a variable.
     #set1 = getWords(args[0].split('=')[1])
-    
     #set2 = getWords(args[1].split('=')[1])
-
-    operation = args[2].split('=')[1]
+    #operation = args[2].split('=')[1]
 
     perform_operation(getWords(args[0].split('=')[1]), getWords(args[1].split('=')[1]), args[2].split('=')[1])
 
