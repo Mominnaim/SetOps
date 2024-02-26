@@ -49,8 +49,11 @@ def removeDupHelp(wordsList, index, target):
     
 
 def intersection(wordsList1, wordsList2, index):
-    if index + 1 >= len(wordsList1):
-        return_result_file(wordsList1)
+    if index > len(wordsList1)-1:
+        if len(wordsList1) == 0:
+            return []
+        else:
+            return_result_file(wordsList1)
     else:
         if (removeIntersectionHelp(wordsList2, 0, wordsList1[index])): 
             return intersection(wordsList1, wordsList2, index + 1)
@@ -93,7 +96,7 @@ def removeDifferenceHelp(wordsList, index, target):
     
 
 def union(wordsList1, wordsList2): 
-    return_result_file(removeDuplicates(wordsList1 + wordsList2, 0))
+    return_result_file(mergeSort(removeDuplicates(wordsList1 + wordsList2, 0)))
 
 
 def parseWords(wordsList, line, index):

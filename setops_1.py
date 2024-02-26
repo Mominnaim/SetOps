@@ -105,7 +105,7 @@ def intersection_function(txt1,txt2):
 # This converts the txt file into a list.
 def file_into_a_list(txt):
     skip = r'!@#$%^?&<>`~;:' # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
-    seperator_1 = r'. +-=/,*()' + '\n' + ' \' ' # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
+    seperator_1 = r'. +-=/,*()' + '\n' + ' \'' + '\t' + '\r' # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
     numbers = r'1234567890' # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
 
     funnel_list = [] # --------------------------------------------------------------------------------->   YOU CANNOT HAVE
@@ -125,7 +125,7 @@ def file_into_a_list(txt):
                 elif result[x] in seperator_1:
 
                     # If the seperator is a . AND if the . is not the first thing in the list -> we go here
-                    if result[x] == '.' and x != 0:
+                    if result[x] == '.' and x != 0 and x != len(result)-1 :
                         
                         # If the next index is a number and index before is also a number than we will append the . rather then splitting it.
                         if result[x + 1] in numbers and result[x-1] in numbers :
