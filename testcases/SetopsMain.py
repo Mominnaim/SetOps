@@ -9,6 +9,7 @@ def getWords(txt):
 
 # The starting point for the actual remove function which is called removeDupHelp()
 def removeDuplicates(wordsList, index):
+
     # the base case
     if index + 1 >= len(wordsList):
         return wordsList
@@ -128,38 +129,25 @@ def parseWords(wordsList, line, index):
 
 
 def mergeSort(arr):
-    n = len(arr)
-    if n <= 1:
+    #n = len(arr)
+    if len(arr) <= 1:
         return arr
     else:
-        #mid = n // 2
-        #left = arr[0:mid]
-        #right = arr[mid:n]
-        merge_split = lambda x: (x[:len(x)//2],x[len(x)//2:]) #--------------> We set two variables within the lambda express that splits the left side and the right
-        leftSide, rightSide = merge_split(arr)
-        #sortedLeft = mergeSort(left)
-        #sortedRight = mergeSort(right)
 
-        
-        return merged(mergeSort(leftSide),mergeSort(rightSide))
+        return merged(mergeSort(arr[0:(len(arr) // 2)]),mergeSort(arr[(len(arr) // 2):len(arr)]),0,0)
     
-def merged(left,right):
-    mergedArray = mergeWhileHelp([], left, right, 0, 0, len(left), len(right))
-    return mergedArray
-
-def mergeWhileHelp(list1, left, right, i,j,m,n):
-    if not(i < m and j < n):
-        list1.extend(left[i:])
-        list1.extend(right[j:])
-        return list1
-    else:
+def merged(left,right,i,j):
+    mergedArray = []
+    while i < len(left) and j < len(right):
         if (left[i] <= right[j]):
-            list1.append(left[i])
+            mergedArray.append(left[i])
             i += 1
         else:
-            list1.append(right[j])
+            mergedArray.append(right[j])
             j += 1
-        return mergeWhileHelp(list1, left, right, i,j,m,n)
+    mergedArray.extend(left[i:])
+    mergedArray.extend(right[j:])
+    return mergedArray
 
 
 def perform_operation(txt1, txt2, operation):
@@ -202,8 +190,3 @@ if __name__ == "__main__":
 
     # Use lamda functions to parse through the files. ---> 1
     # Be able to create a result.txt with an input of "empty set" 
-
-
-
-
-

@@ -3,20 +3,34 @@ import sys
 
 def getWords(txt):
 
- 
-    return mergeSort(removeDuplicates(parseWords([],open(txt, "r").read(),0),0))
+    word = []
+    return mergeSort(removeDuplicates(parseWords(word,open(txt, "r").read(),0),0))
 
+"""
+    words3 = union(words, words2)
+    words3 = intersection(words, words2, 0)
+    #words3 = difference(words, words2, 0)
+    #words3 = mergeSort(words3)
+    return words3
+"""
 
 # The starting point for the actual remove function which is called removeDupHelp()
 def removeDuplicates(wordsList, index):
-    # the base case
-    if index + 1 >= len(wordsList):
-        return wordsList
-    
-    # Otherwise come here and go to the acutal remove duplicate function
-    else:
+    print('here2')
+    try:
+        # the base case
+        if index + 1 >= len(wordsList):
+            return wordsList
+        
+        # Otherwise come here and go to the acutal remove duplicate function
+        else:
+            # Update wordsList with the result of removeDupHelp
+            #wordsList = removeDupHelp(wordsList, index + 1, wordsList[index])
+            # Recur for the next word
 
-        return removeDuplicates(removeDupHelp(wordsList, index + 1, wordsList[index]), index + 1)
+            return removeDuplicates(removeDupHelp(wordsList, index + 1, wordsList[index]), index + 1)
+    except TypeError:
+        print("There is nothing in this file")
 
 # This is the actual function where the duplicates get deleted
 def removeDupHelp(wordsList, index, target):
@@ -28,6 +42,9 @@ def removeDupHelp(wordsList, index, target):
     # elif the word matches the target then  append everything 
     elif wordsList[index] == target:
 
+        # wordsList = wordsList[:index] + wordsList[index + 1:]
+        # Recur for the same index as the length has reduced after removal
+
         return removeDupHelp(wordsList[:index] + wordsList[index + 1:], index, target)
     else:
         # Recur for the next character
@@ -37,7 +54,7 @@ def removeDupHelp(wordsList, index, target):
 def intersection(wordsList1, wordsList2, index):
     if index > len(wordsList1)-1:
         if len(wordsList1) == 0:
-            return []
+            return_result_file("empty set")
         else:
             return_result_file(wordsList1)
     else:
@@ -82,27 +99,71 @@ def removeDifferenceHelp(wordsList, index, target):
     
 
 def union(wordsList1, wordsList2): 
-    return_result_file(mergeSort(removeDuplicates(wordsList1 + wordsList2, 0)))
+    if (len(wordsList1) == 0 and len(wordsList2) == 0):
+        return_result_file("empty set")
+    else:
+        return_result_file(mergeSort(removeDuplicates(wordsList1 + wordsList2, 0)))
 
 
 def parseWords(wordsList, line, index):
+    print('here1')
+    isDigit = lambda x: (x == '0' or x == '1' or x == '2' or x == '3' or x == '4' or 
+        x == '5' or x == '6' or x == '7' or x == '8' or x == '9')
+    isLowerChar = lambda x: (x == 'a' or x == 'b' or x == 'c' or x == 'd' or x == 'e' or 
+          x == 'f' or x == 'g' or x == 'h' or x == 'i' or x == 'j' or 
+          x == 'k' or x == 'l' or x == 'm' or x == 'n' or x == 'o' or 
+          x == 'p' or x == 'q' or x == 'r' or x == 's' or x == 't' or 
+          x == 'u' or x == 'v' or x == 'w' or x == 'x' or x == 'y' or x == 'z')
+    isUpperChar = lambda x: (x == 'A' or x == 'B' or x == 'C' or x == 'D' or x == 'E' or 
+          x == 'F' or x == 'G' or x == 'H' or x == 'I' or x == 'J' or 
+          x == 'K' or x == 'L' or x == 'M' or x == 'N' or x == 'O' or 
+          x == 'P' or x == 'Q' or x == 'R' or x == 'S' or x == 'T' or 
+          x == 'U' or x == 'V' or x == 'W' or x == 'X' or x == 'Y' or x == 'Z')
+
     while index < len(line):
-        if (line[index] in '0123456789'):
-            index += 1
-        elif (line[index] in 'abcdefghijklmnopqrstuvwxyz'):
-            index += 1
-        elif (line[index] in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
-            #lowercaseChar = chr(ord(line[index]) + 32)
-            line = line[:index] + chr(ord(line[index]) + 32) + line[index + 1:]
-            index += 1
+        if isDigit(line[index]):
+            if (index != 0):
+                if ((isLowerChar(line[index - 1])) or (isUpperChar(line[index - 1]))):
+                    wordsList.append(line[:index])
+                    line = line[index:]
+                    index = 0
+                else:
+                    index += 1
+            else:
+                index += 1
+        elif isLowerChar(line[index]):
+            if (index != 0):
+                if ((isDigit(line[index - 1])) or (isDigit(line[index - 1]))):
+                    wordsList.append(line[:index])
+                    line = line[index:]
+                    index = 0
+                else:
+                    index += 1
+            else:
+                index += 1
+        elif isUpperChar(line[index]):
+            lowercaseChar = chr(ord(line[index]) + 32)
+            line = line[:index] + lowercaseChar + line[index + 1:]
+            if (index != 0):
+                if ((isDigit(line[index - 1])) or (isDigit(line[index - 1]))):
+                    wordsList.append(line[:index])
+                    line = line[index:]
+                    index = 0
+                else:
+                    index += 1
+            else:
+                index += 1
         else:
             if (line[index] == "."):
                 if index != 0:
                     if (index != len(line) - 1):
-                        if (line[index-1] in '0123456789'): # -------------------------- To check if the index after is a number
-                            if (line[index+1] in '012345679'): # -------------------------- To check if the index before is a number
-                                    index += 1 
-                            else:                              # -------------------------- If no number in front of the period then append the word
+                        if (line[index-1] == '0' or line[index-1] == '1' or line[index-1] == '2' or line[index-1] == '3' or line[index-1] == '4' or 
+                            line[index-1] == '5' or line[index-1] == '6' or line[index-1] == '7' or line[index-1] == '8' or line[index-1] == '9'):
+                            if (line[index+1] == '0' or line[index+1] == '1' or line[index+1] == '2' or line[index+1] == '3' or 
+                                line[index+1] == '4' or line[index+1] == '5' or line[index+1] == '6' or line[index+1] == '7' 
+                                or line[index+1] == '8' or line[index+1] == '9'):
+                                    index += 1
+                            else:
                                 wordsList.append(line[:index])
                                 line = line[index + 1:]
                                 index = 0
@@ -128,23 +189,23 @@ def parseWords(wordsList, line, index):
 
 
 def mergeSort(arr):
+    print('here3')
     n = len(arr)
     if n <= 1:
         return arr
     else:
-        #mid = n // 2
-        #left = arr[0:mid]
-        #right = arr[mid:n]
-        merge_split = lambda x: (x[:len(x)//2],x[len(x)//2:]) #--------------> We set two variables within the lambda express that splits the left side and the right
-        leftSide, rightSide = merge_split(arr)
-        #sortedLeft = mergeSort(left)
-        #sortedRight = mergeSort(right)
-
-        
-        return merged(mergeSort(leftSide),mergeSort(rightSide))
+        mid = n // 2
+        left = arr[0:mid]
+        right = arr[mid:n]
+        sortedLeft = mergeSort(left)
+        sortedRight = mergeSort(right)
+        return merged(sortedLeft,sortedRight)
     
 def merged(left,right):
-    mergedArray = mergeWhileHelp([], left, right, 0, 0, len(left), len(right))
+    mergedArray = []
+    m, n = len(left), len(right)
+    i, j = 0, 0
+    mergedArray = mergeWhileHelp(mergedArray, left, right, i,j,m,n)
     return mergedArray
 
 def mergeWhileHelp(list1, left, right, i,j,m,n):
@@ -182,7 +243,10 @@ def perform_operation(txt1, txt2, operation):
 
 def return_result_file(txt_list):
     with open('result.txt', 'w') as result_file:
-        result_file.write('\n'.join(txt_list))
+        if (txt_list == "[]"):
+            result_file.write("empty set")
+        else:
+            result_file.write('\n'.join(txt_list))
 
 
 if __name__ == "__main__":
@@ -193,17 +257,13 @@ if __name__ == "__main__":
     # argv[1] is the string of set1, set2, and operation and its splits it with semi colon
     args = sys.argv[1].split(';')
 
+    # There are three elements now which each one of them being assigned a variable.
+    #set1 = getWords(args[0].split('=')[1])
+    #set2 = getWords(args[1].split('=')[1])
+    #operation = args[2].split('=')[1]
+
     perform_operation(getWords(args[0].split('=')[1]), getWords(args[1].split('=')[1]), args[2].split('=')[1])
 
 
     # If the correct parameters are passed in then start the actually part of the code.
     # perform_operation(set1, set2, operation)
-
-
-    # Use lamda functions to parse through the files. ---> 1
-    # Be able to create a result.txt with an input of "empty set" 
-
-
-
-
-
